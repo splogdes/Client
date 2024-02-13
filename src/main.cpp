@@ -12,16 +12,14 @@ void loop() {
   while (true) {
     counter++;
 
-    if (counter % 2 == 0) {
-      doc["type"] = "soil_data";
-      doc["mac"] = macAddress;
-      doc["soil_moisture"] = random(0, 100);
-    } else {
-      doc["type"] = "sensor_data";
-      doc["mac"] = macAddress;
-      doc["temperature"] = random(0, 100);
-      doc["humidity"] = random(-100, 100);
-    }
+
+    // Send artificial sensor data
+    doc.clear();
+    doc["message_type"] = "sensor_data";
+    doc["mac"] = macAddress;
+    doc["sensors"]["bonsai"]["moisture"] = random(0, 100);
+    doc["sensors"]["room monitor"]["temperature"] = random(-100, 0);
+    doc["sensors"]["room monitor"]["humidity"] = random(0, 200);
 
     char buffer[255];
     serializeJson(doc, buffer);
@@ -32,22 +30,12 @@ void loop() {
 
     delay(500);
 
-    int packetSize = udp.parsePacket();
-    if (packetSize) {
-      Serial.print("Received response from server: ");
+    Process_response();
 
-      char packetBuffer[255];
-
-      int len = udp.read(packetBuffer, 255);
-      if (len > 0) {
-        packetBuffer[len] = 0;
-      }
-      Serial.println(packetBuffer);
-
-      if (strcmp(packetBuffer, "register_device") == 0) {
-        registerDevice();
-      }
-    }
     delay(5000);
+
   }
 }
+
+
+  

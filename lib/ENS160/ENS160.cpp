@@ -48,20 +48,20 @@ int ENS160::get_air_quality() {
 }
 
 void ENS160::set_temp(float temp) {
-    int tmp = (int) ((temp + 273.15f)*64.0f);
+    uint8_t tmp = (uint8_t) ((temp + 273.15f)*64.0f);
     Wire.beginTransmission(0x52);
     Wire.write(0x13);
-    Wire.write(tmp >> 8);
     Wire.write(tmp & 0xFF);
+    Wire.write(tmp >> 8);
     Wire.endTransmission();
 }
 
 void ENS160::set_humid(float humid) {
-    int hum = (int) (humid*512.0f);
+    uint8_t hum = (uint8_t) (humid*512.0f);
     Wire.beginTransmission(0x52);
     Wire.write(0x15);
-    Wire.write(hum >> 8);
     Wire.write(hum & 0xFF);
+    Wire.write(hum >> 8);
     Wire.endTransmission();
 }
 

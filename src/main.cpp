@@ -2,7 +2,7 @@
 
 AHT20 aht20("room monitor");
 ENS160 ens160("gas sensor");
-UDP_Server udp_server("172.20.10.3", 5005);
+UDP_Server udp_server("10.42.0.1", 5005);
 Device device;
 
 void setup() {
@@ -12,7 +12,7 @@ void setup() {
     
     ens160.wake();
     
-    udp_server.connect("Oliver’s iPhone", "123456789");
+    udp_server.connect("rpi_automation", "rpi_automation_1234");
     udp_server.begin();
 
     device.model = "d1-mini";
@@ -26,6 +26,9 @@ void setup() {
 
 void loop() {
     aht20.read();
+    ens160.set_temp(aht20.get_temperature());
+    ens160.set_humid(aht20.get_humidity());
+    delay(1000);
     ens160.read();
     udp_server.send_data(device);
     udp_server.process_response(device);

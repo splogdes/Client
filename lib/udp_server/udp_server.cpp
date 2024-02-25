@@ -22,10 +22,10 @@ void UDP_Server::connect(String ssid, String password) {
     Serial.println("\nConnected to WiFi");
 }
 
-void UDP_Server::begin(int port) {
-    udp.begin(port);
+void UDP_Server::begin() {
+    udp.begin(udp_port);
     Serial.print("Listening on port: ");
-    Serial.println(port);
+    Serial.println(udp_port);
 }
 
 void UDP_Server::process_response(Device device) {
@@ -42,8 +42,8 @@ void UDP_Server::process_response(Device device) {
             register_device(device);
         } else {
             for (int i = 0; i < device.sensors_size; i++) {
-                if (strcmp(packet_buffer, device.sensors[i].name) == 0) {
-                    register_sensor(device.sensors[i]);
+                if (strcmp(packet_buffer, device.sensors[i]->name) == 0) {
+                    register_sensor(*device.sensors[i]);
                 }
             }
         }
@@ -69,13 +69,14 @@ void UDP_Server::register_sensor(Sensor sensor) {
     send_json(doc);
 }
 
-void UDP_Server::send_data(Sensor* sensors, int size) {
+void UDP_Server::send_data(Device device) {
     JsonDocument doc;
     doc["message_type"] = "sensor_data";
     doc["mac"] = mac_address;
-    for (int i = 0; i < size; i++) {
-        for (int j = 0; j < sensors[i].data_size; j++) {
-            doc["sensors"][sensors[i].name][sensors[i].data[j].type] = sensors[i].data[j].value;
+    for (int i = 0; i < device.sensors_size; i++) {
+        Sensor * sensor = device.sensors[i];
+        for (int j = 0; j < sensor->data_size; j++) {
+            doc["sensors"][sensor->name][sensor->data[j].type] = sensor->data[j].value;
         }
     }
     send_json(doc);
@@ -88,5 +89,3 @@ void UDP_Server::send_json(JsonDocument doc) {
     udp.write(buffer);
     udp.endPacket();
 }
-
-    

@@ -16,7 +16,7 @@ typedef struct {
 typedef struct {
     const char * model;
     const char * location;
-    Sensor * sensors;
+    Sensor ** sensors;
     int sensors_size;
 } Device;
 

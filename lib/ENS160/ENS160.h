@@ -17,6 +17,7 @@ class ENS160 {
 		void deep_sleep();
 		void sleep();
 		void wake();
+        void read();
         Sensor * get_data();
 	private:
         Sensor * sensor;

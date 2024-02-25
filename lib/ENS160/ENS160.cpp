@@ -102,8 +102,11 @@ void ENS160::wake() {
 }
 
 Sensor * ENS160::get_data() {
-    get_air_quality();
+    return sensor;
+}
+
+void ENS160::read() {
     get_eco2();
     get_tvoc();
-    return sensor;
+    get_air_quality();
 }

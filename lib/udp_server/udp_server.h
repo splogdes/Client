@@ -11,9 +11,9 @@ class UDP_Server {
         UDP_Server(String udp_server, const int udp_port);
         ~UDP_Server();
         void connect(String ssid, String password);
-        void begin(int port);
+        void begin();
         void process_response(Device device);
-        void send_data(Sensor* sensors, int size);
+        void send_data(Device device);
     private:
         void register_sensor(Sensor sensor);
         void register_device(Device device);

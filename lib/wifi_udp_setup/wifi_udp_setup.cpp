@@ -9,22 +9,22 @@ WiFiUDP udp;
 
 void setupWiFiUDP() {
 
-	Serial.println("");
-	Serial.print("Connecting to WiFi");
-	WiFi.begin(ssid, password);
+    Serial.println("");
+    Serial.print("Connecting to WiFi");
+    WiFi.begin(ssid, password);
 
-	while (WiFi.status() != WL_CONNECTED) {
-		delay(1000);
-		Serial.print(".");
-	}
+    while (WiFi.status() != WL_CONNECTED) {
+        delay(1000);
+        Serial.print(".");
+    }
 
-	Serial.println("Connected to WiFi");
+    Serial.println("Connected to WiFi");
 
-	Serial.print("IP address: ");
-	Serial.println(WiFi.localIP());
+    Serial.print("IP address: ");
+    Serial.println(WiFi.localIP());
 
-	Serial.print("MAC address: ");
-	Serial.println(macAddress);
+    Serial.print("MAC address: ");
+    Serial.println(macAddress);
 
-	udp.begin(udp_port);
+    udp.begin(udp_port);
 }

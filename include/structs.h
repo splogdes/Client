@@ -3,6 +3,7 @@
 
 typedef struct {
     const char * type;
+    const char * unit;
     float value;
 } Sensor_data;
 

@@ -11,7 +11,9 @@ AHT20::AHT20(const char * name) {
     sensor->data = new Sensor_data[2];
     sensor->data_size = 2;
     sensor->data[0].type = "temperature";
+    sensor->data[0].unit = "C";
     sensor->data[1].type = "humidity";
+    sensor->data[1].unit = "%";
 }
 
 AHT20::~AHT20() {

@@ -56,7 +56,6 @@ void UDP_Server::register_device(Device device) {
     doc["mac"] = mac_address;
     doc["model"] = device.model;
     doc["location"] = device.location;
-    char buffer[255];
     send_json(doc);
 }
 
@@ -66,6 +65,9 @@ void UDP_Server::register_sensor(Sensor sensor) {
     doc["mac"] = mac_address;
     doc["name"] = sensor.name;
     doc["model"] = sensor.model;
+    for (int i = 0; i < sensor.data_size; i++) {
+        doc["modes"][sensor.data[i].type] = sensor.data[i].unit;
+    }
     send_json(doc);
 }
 

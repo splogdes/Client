@@ -7,8 +7,11 @@ ENS160::ENS160(const char * name) {
     sensor->data = new Sensor_data[3];
     sensor->data_size = 3;
     sensor->data[0].type = "eco2";
+    sensor->data[0].unit = "PPM";
     sensor->data[1].type = "tvoc";
+    sensor->data[1].unit = "PPB";
     sensor->data[2].type = "air_quality";
+    sensor->data[2].unit = "AQI";
 }
 
 ENS160::~ENS160() {
@@ -48,20 +51,20 @@ int ENS160::get_air_quality() {
 }
 
 void ENS160::set_temp(float temp) {
-    uint8_t tmp = (uint8_t) ((temp + 273.15f)*64.0f);
+    int tmp = (int) ((temp + 273.15f)*64.0f);
     Wire.beginTransmission(0x52);
     Wire.write(0x13);
     Wire.write(tmp & 0xFF);
-    Wire.write(tmp >> 8);
+    Wire.write((tmp >> 8) & 0xFF);
     Wire.endTransmission();
 }
 
 void ENS160::set_humid(float humid) {
-    uint8_t hum = (uint8_t) (humid*512.0f);
+    int hum = (int) (humid*512.0f);
     Wire.beginTransmission(0x52);
     Wire.write(0x15);
     Wire.write(hum & 0xFF);
-    Wire.write(hum >> 8);
+    Wire.write((hum >> 8) & 0xFF);
     Wire.endTransmission();
 }
 
@@ -106,7 +109,7 @@ Sensor * ENS160::get_data() {
 }
 
 void ENS160::read() {
-    get_eco2();
     get_tvoc();
+    get_eco2();
     get_air_quality();
 }
